@@ -210,6 +210,8 @@ const firebaseConfig = {
 };
 /* 歌曲存放的 Firestore 集合名稱 */
 const COLLECTION = "songbook";
+/* 可以編輯歌單的帳號（要和 Firestore 規則裡的 Email 一致） */
+const EDITORS = ["qqsweetpotatoballs@gmail.com"];
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, onSnapshot, addDoc, setDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -350,8 +352,8 @@ onSnapshot(col,snap=>{
 
 /* 登入：只有登入的歌手會看到編輯按鈕；實際權限由 Firestore 規則決定 */
 onAuthStateChanged(auth,u=>{
-  canEdit=!!u;
-  $("who").textContent=u?`已登入：${u.email}`:"";
+  canEdit=!!u && EDITORS.includes(u.email);
+  $("who").textContent=u?(canEdit?`已登入：${u.email}`:`${u.email} 沒有編輯權限`):"";
   $("authBtn").textContent=u?"登出":"歌手登入";
   if(!u)$("panel").hidden=true;
   render();
