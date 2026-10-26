@@ -216,7 +216,7 @@ import { getFirestore, collection, onSnapshot, addDoc, setDoc, deleteDoc, doc, s
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const LANGS=["華語","日語","英語","台語","其他"];
-const GENRES=["抒情","快歌","動漫","Vocaloid","其他"];
+const GENRES=["抒情","快歌","動漫","Vocaloid","古風","其他"];
 const LEVELS=[{v:3,t:"拿手"},{v:2,t:"還行"},{v:1,t:"練習中"}];
 const lvlName=v=>(LEVELS.find(l=>l.v===v)||{t:"—"}).t;
 const $=id=>document.getElementById(id);
