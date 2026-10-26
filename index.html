@@ -28,15 +28,11 @@
 }
 *{box-sizing:border-box}
 body{
-  background:var(--night);color:var(--cream);font-family:var(--f-body);font-size:15px;line-height:1.6;
-  background-image:radial-gradient(1200px 500px at 85% -10%,rgba(233,169,72,.10),transparent 60%),
-                   radial-gradient(900px 400px at -10% 0%,rgba(185,144,111,.10),transparent 60%);
-  background-attachment:fixed;min-height:100%;
+  background:var(--night);color:var(--cream);font-family:var(--f-body);font-size:15px;line-height:1.6;min-height:100%;
 }
 .wrap{max-width:860px;margin:0 auto;padding-block:28px 64px;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
   display:flex;flex-direction:column;gap:22px}
-#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
 .wrap{position:relative;z-index:1}
 
 header.mast{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px dashed var(--line)}
@@ -126,14 +122,12 @@ label.fld{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--
   .stats{width:100%;justify-content:flex-start}
   .stat{align-items:flex-start}
 }
-@media (prefers-reduced-motion:reduce){#stars{display:none}}
 .foot{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--cream-dim);padding-top:10px;border-top:1px dashed var(--line)}
 code{font-family:var(--f-mono);font-size:.9em;color:var(--yam)}
 </style>
 <style>body{margin:0}:root{padding-block:env(safe-area-inset-top,0px) env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}</style>
 </head>
 <body>
-<canvas id="stars" aria-hidden="true"></canvas>
 <div class="wrap">
   <header class="mast">
     <div class="brand">
@@ -365,17 +359,6 @@ $("authBtn").onclick=async()=>{
 
 render();
 
-/* 星空背景 */
-(function(){
-  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
-  const c=$("stars"),x=c.getContext("2d");let st=[];
-  function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;
-    st=Array.from({length:Math.round(innerWidth*innerHeight/9000)},()=>({x:Math.random()*c.width,y:Math.random()*c.height*.8,r:(Math.random()*1.2+.3)*devicePixelRatio,p:Math.random()*6.28,s:.4+Math.random()}));}
-  size();addEventListener("resize",size);
-  (function f(t){x.clearRect(0,0,c.width,c.height);
-    for(const s of st){const a=.25+.45*(.5+.5*Math.sin(t/1000*s.s+s.p));x.fillStyle=`rgba(243,234,216,${a})`;x.beginPath();x.arc(s.x,s.y,s.r,0,6.28);x.fill();}
-    requestAnimationFrame(f);})(0);
-})();
 </script>
 </body>
 </html>
