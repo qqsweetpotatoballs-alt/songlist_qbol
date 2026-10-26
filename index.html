@@ -214,7 +214,9 @@ import { getFirestore, collection, onSnapshot, addDoc, setDoc, deleteDoc, doc, s
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const LANGS=["華語","日語","英語","台語","其他"];
-const GENRES=["抒情","快歌","動漫","Vocaloid","古風","Vtuber","失戀","其他"];
+const GENRES=["抒情","快歌","動漫","虛擬歌姬 (包括v家)","古風","Vtuber","失戀","其他"];
+/* 舊的類別名稱 → 新名稱（之前存成舊名的歌曲會自動歸到新類別） */
+const GENRE_ALIASES={"Vocaloid":"虛擬歌姬 (包括v家)"};
 const LEVELS=[{v:3,t:"拿手"},{v:2,t:"還行"},{v:1,t:"練習中"}];
 const lvlName=v=>(LEVELS.find(l=>l.v===v)||{t:"—"}).t;
 const $=id=>document.getElementById(id);
@@ -342,7 +344,7 @@ $("pickBtn").onclick=pick;$("repick").onclick=pick;
 
 /* 歌單：所有人都能即時讀取 */
 onSnapshot(col,snap=>{
-  songs=snap.docs.map(d=>({id:d.id,...d.data()}));
+  songs=snap.docs.map(d=>{const s={id:d.id,...d.data()};if(GENRE_ALIASES[s.genre])s.genre=GENRE_ALIASES[s.genre];return s;});
   $("status").textContent="";render();
 },()=>{$("status").textContent="歌單暫時無法載入，請重新整理頁面。";});
 
